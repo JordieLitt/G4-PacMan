@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
             //need to find the positon of the tile and turn it off
             pelletMap.SetTile(pelletMap.WorldToCell(transform.position), null);
             pelletsLeft -= 1;
-            //print(pelletsLeft);
+            print(pelletsLeft);
             AddScore(10);
             if (pelletsLeft <= 0)
             {
