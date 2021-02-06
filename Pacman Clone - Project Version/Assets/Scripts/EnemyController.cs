@@ -106,6 +106,7 @@ public class EnemyController : MonoBehaviour
         //start picking a direction
         Vector3 newDirection = new Vector3(0,0,0);
         float distance = 1000000;
+        float rotation = 0;
         if (oldDirection != Vector3.up && RaycastCheck(Vector3.up) == false) //checking if we're going backwards, then if there's a wall in the way
         {
             //print("Can go Up");
@@ -113,6 +114,7 @@ public class EnemyController : MonoBehaviour
             {
                 distance = Vector3.Distance(targetPos,transform.position + Vector3.up);
                 newDirection = Vector3.up;
+                rotation = 180;
             }
         }
         //now check the same for the other 3 directions
@@ -123,6 +125,7 @@ public class EnemyController : MonoBehaviour
             {
                 distance = Vector3.Distance(targetPos,transform.position + Vector3.left);
                 newDirection = Vector3.left;
+                rotation = 270;
             }
         }
         if (oldDirection != Vector3.down && RaycastCheck(Vector3.down) == false) 
@@ -132,6 +135,7 @@ public class EnemyController : MonoBehaviour
             {
                 distance = Vector3.Distance(targetPos,transform.position + Vector3.down);
                 newDirection = Vector3.down;
+                rotation = 0;
             }
         }
         if (oldDirection != Vector3.right && RaycastCheck(Vector3.right) == false) 
@@ -141,11 +145,17 @@ public class EnemyController : MonoBehaviour
             {
                 distance = Vector3.Distance(targetPos,transform.position + Vector3.right);
                 newDirection = Vector3.right;
+                rotation = 90;
             }
         }
         //print(newDirection);
+        //rotate based on facing
+        transform.rotation = Quaternion.Euler(0,0,rotation);
         //finally move in the chosen direction
-        StartCoroutine(MoveEnemy(newDirection));
+        //if (!gameOver)
+        {
+            StartCoroutine(MoveEnemy(newDirection));
+        }
     }
     private bool RaycastCheck(Vector3 direction)
     {

@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public Text winText;
     public Text scoreText;
-    private int score= 0;
+    public Text levelText;
+    public Text livesText;
+    public static int level = 1;
+    private static int score = 0;
+    private static int livesScore;
+    public static int lives = 3;
     public float timeToMove;
     public Tilemap pelletMap;
     private Vector3 oldPos;
@@ -24,6 +30,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         winText.text = "";
+        levelText.text = "Level\n"+ level;
+        livesText.text = "Lives\n"+ lives;
+
         AddScore(0);
         
         BoundsInt bounds = pelletMap.cellBounds; //count up all the pellets on the map
@@ -50,16 +59,37 @@ public class PlayerController : MonoBehaviour
         if (!gameOver)
         {
             if (Input.GetKey(KeyCode.W) && !isMoving && RaycastCheck(Vector3.up) == false)
+            {
                 StartCoroutine(MovePlayer(Vector3.up));
+                transform.rotation = Quaternion.Euler(0,0,90);
+            }
 
             if (Input.GetKey(KeyCode.A) && !isMoving && RaycastCheck(Vector3.left) == false)
+            {
                 StartCoroutine(MovePlayer(Vector3.left));
+                transform.rotation = Quaternion.Euler(0,0,180);
+            }
 
             if (Input.GetKey(KeyCode.S) && !isMoving && RaycastCheck(Vector3.down) == false)
+            {
                 StartCoroutine(MovePlayer(Vector3.down));
+                transform.rotation = Quaternion.Euler(0,0,270);
+            }
 
             if (Input.GetKey(KeyCode.D) && !isMoving && RaycastCheck(Vector3.right) == false)
+            {
                 StartCoroutine(MovePlayer(Vector3.right));
+                transform.rotation = Quaternion.Euler(0,0,0);
+            }
+        } else //gameOver is true
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (lives > 0)
+                {
+                    ResetLevel();
+                }
+            }
         }
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -119,8 +149,11 @@ public class PlayerController : MonoBehaviour
             AddScore(10);
             if (pelletsLeft <= 0)
             {
-                winText.text = "You Win!";
+                winText.text = "You Beat Level " + level + "!";
                 gameOver = true;
+                level += 1;
+                StartCoroutine(Pause());
+                SceneManager.LoadScene("Level A");
             }
 
         }else if(other.gameObject.CompareTag("Power Up"))
@@ -136,14 +169,21 @@ public class PlayerController : MonoBehaviour
         {
             if (ghostScript.Vulnerable == false)
             {
-                winText.text = "You Lose";
-                gameOver = true;
+                AddLives(-1);
             } else
             {
                 AddScore(500);
                 other.gameObject.GetComponent<EnemyController>().Eaten();
             }
         }
+    }
+    IEnumerator Pause()
+    {
+        yield return new WaitForSeconds(3);
+    }
+    void ResetLevel()
+    {
+        //reset pacman and ghosts to starting positions and wait for input
     }
     void TeleportFlip()
     {
@@ -158,7 +198,24 @@ public class PlayerController : MonoBehaviour
     void AddScore(int scoreChange)
     {
         score += scoreChange;
+        livesScore += scoreChange;
         scoreText.text = "Score\n" + score;
+        if (livesScore > 10000)
+        {
+            AddLives(1);
+            livesScore -= 10000;
+        }
+    }
+    void AddLives(int livesChange)
+    {
+        lives += livesChange;
+        livesText.text = "Lives\n" + lives;
+        if (lives < 0)
+        {
+            gameOver = true;
+            winText.text = "You Lose\nPress Space to Continue";
+        }
+        
     }
 
 }
