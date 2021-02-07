@@ -28,7 +28,12 @@ public class EnemyController : MonoBehaviour
     private int maxPellets;
     private bool eaten = false;
     private float eatenTimer;
+    float elapsedTime = 0;//used for moving
     Animator animator;
+
+    public AudioClip normSound;
+    public AudioClip vulSound;
+    private AudioSource audioSource;
 
     void Start()
     {
@@ -41,12 +46,22 @@ public class EnemyController : MonoBehaviour
         scatterPos = waypoint.transform.position;
         chaseTimer = maxChaseTimer;
 
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource != null)
+        {
+            audioSource.clip = normSound;
+        }
 
         maxPellets = playerScript.pelletsLeft;
         print(gameObject.name + maxPellets);
     }
 
     // Update is called once per frame
+    
+    void Update()
+    {
+        
+    }
     void FixedUpdate()
     {
 
@@ -87,6 +102,11 @@ public class EnemyController : MonoBehaviour
         {
             animator.SetBool("Vul", false);
             Vulnerable = false;
+            if (audioSource != null)
+            {
+                audioSource.clip = normSound;
+                audioSource.Play();
+            }
         }
         
         if (playerScript.pelletsLeft > (maxPellets * startPercent)) //stops ghosts from moving until the player has eaten a certain percentage of pellets
@@ -192,12 +212,22 @@ public class EnemyController : MonoBehaviour
         temp.x *= -1;
         transform.position = temp;
     }
+    public void ResetPos()
+    {
+        elapsedTime = 1000000;
+        transform.position = boxWaypoint.transform.position;
+    }
     public void VulnerableState()
     {
         Vulnerable = true;
         vulTimer = maxVulTimer;
         animator.SetBool("Vul",true);
         print(gameObject.name + "I'm Scared!");
+        if (audioSource != null)
+        {
+            audioSource.clip = vulSound;
+            audioSource.Play();
+        }
     }
 
     public void Eaten()
@@ -211,7 +241,7 @@ public class EnemyController : MonoBehaviour
     private IEnumerator MoveEnemy(Vector3 direction)
     {
         isMoving = true;
-        float elapsedTime = 0; 
+        elapsedTime = 0; 
         oldDirection = direction * -1; //flip it to check if we go backwards later
 
         oldPos = transform.position;

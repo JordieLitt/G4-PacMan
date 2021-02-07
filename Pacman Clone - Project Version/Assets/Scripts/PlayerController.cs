@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public Text winText;
+    public Image backdrop;
     public Text scoreText;
     public Text levelText;
     public Text livesText;
@@ -19,16 +20,27 @@ public class PlayerController : MonoBehaviour
     private Vector3 oldPos;
     private Vector3 targetPos;
     public Vector3 facing;
-    public GameObject Blinky;
-    public GameObject Pinky;
-    public GameObject Inky;
-    public GameObject Clyde;
+    private GameObject Blinky;
+    private GameObject Pinky;
+    private GameObject Inky;
+    private GameObject Clyde;
     public int pelletsLeft;
+    public GameObject boxSpawn;
     
     private bool isMoving;
     private bool gameOver = false;
+    private bool isPaused = false;
+    float elapsedTime = 0;//used for moving
 
     private EnemyController ghostScript;
+    private AudioSource audioSource;
+
+    public AudioClip pelletNom;
+    public AudioClip loseMusic;
+    public AudioClip winMusic;
+    private Animator anim;
+
+    private bool cheatMode;
 
     void Awake()
     {
@@ -39,13 +51,17 @@ public class PlayerController : MonoBehaviour
             if (tile != null)
                 pelletsLeft += 1;
         }
-        print (pelletsLeft);
+        print(pelletsLeft);
+        
+        audioSource = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
 
         winText.text = "";
-        levelText.text = "Level\n"+ level;
-        livesText.text = "Lives\n"+ lives;
+        backdrop.enabled = false;
+        levelText.text = "" + level;
+        livesText.text = "Lives";
 
-        AddScore(0);
+        AddScore(-10);
         
         Blinky = GameObject.Find("Blinky Car");
         Pinky = GameObject.Find("Pinky Car");
@@ -54,6 +70,73 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            cheatMode = !cheatMode;
+            if (cheatMode)
+                timeToMove = 0.1f;
+            else
+                timeToMove = 0.25f;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!gameOver)    
+            {
+                isPaused = !isPaused;
+                print("Pause = " + isPaused);
+                if (isPaused)
+                {
+                    winText.text = "Paused";
+                    backdrop.enabled = true;
+                    Time.timeScale = 0;
+                } else
+                {
+                    winText.text = "";
+                    backdrop.enabled = false;
+                    Time.timeScale = 1;
+                }
+            } else if (pelletsLeft == 0)
+            {
+                Time.timeScale = 1;
+                Scene scene = SceneManager.GetActiveScene();
+                if (scene.name == "Level B")
+                {
+                    SceneManager.LoadScene("Level A");
+                } else
+                {
+                    SceneManager.LoadScene("Level B");
+                }
+                
+
+            }else if (lives > 0) //gameOver
+            {
+                anim.SetBool("Dead",false);
+                Time.timeScale = 1;
+                winText.text = "";
+                backdrop.enabled = false;
+
+                Blinky.GetComponent<EnemyController>().ResetPos();
+                Pinky.GetComponent<EnemyController>().ResetPos();
+                Inky.GetComponent<EnemyController>().ResetPos();
+                Clyde.GetComponent<EnemyController>().ResetPos();
+                
+                transform.position = Vector3.zero;
+                audioSource.Stop();
+                gameOver = false;
+            } else
+            {
+                Time.timeScale = 1;
+                lives = 3;
+                score = 0;
+                level = 1;
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+    }
+    
     void FixedUpdate()
     {
         if (Mathf.Abs(transform.position.x) > 10)
@@ -84,16 +167,8 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(MovePlayer(Vector3.right));
                 transform.rotation = Quaternion.Euler(0,0,0);
             }
-        } else //gameOver is true
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                if (lives > 0)
-                {
-                    ResetLevel();
-                }
-            }
-        }
+        } 
+        
         if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
@@ -118,7 +193,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MovePlayer(Vector3 direction)
     {
         isMoving = true;
-        float elapsedTime = 0;
+        elapsedTime = 0;
         facing = direction; 
 
         oldPos = transform.position;
@@ -144,19 +219,26 @@ public class PlayerController : MonoBehaviour
         //print(other.gameObject.tag);
         if (other.gameObject.CompareTag("Pellet") && pelletMap != null)
         {
-            print(pelletMap.WorldToCell(targetPos));
+            //print(pelletMap.WorldToCell(targetPos));
             //need to find the positon of the tile and turn it off
             pelletMap.SetTile(pelletMap.WorldToCell(targetPos), null);
             pelletsLeft -= 1;
-            print(pelletsLeft);
+            //print(pelletsLeft);
             AddScore(10);
+            audioSource.clip = pelletNom;
+            audioSource.Play();
+
             if (pelletsLeft <= 0)
             {
                 winText.text = "You Beat Level " + level + "!";
+
+                audioSource.clip = winMusic;
+                audioSource.Play();
+
+                backdrop.enabled = true;
                 gameOver = true;
+                elapsedTime = 10000;
                 level += 1;
-                StartCoroutine(Pause());
-                SceneManager.LoadScene("Level A");
             }
 
         }else if(other.gameObject.CompareTag("Power Up"))
@@ -173,6 +255,12 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.GetComponent<EnemyController>().Vulnerable == false)
             {
+                anim.SetBool("Dead",true);
+                Blinky.GetComponent<EnemyController>().ResetPos();
+                Pinky.GetComponent<EnemyController>().ResetPos();
+                Inky.GetComponent<EnemyController>().ResetPos();
+                Clyde.GetComponent<EnemyController>().ResetPos();
+                elapsedTime = 10000;
                 AddLives(-1);
             } else
             {
@@ -180,10 +268,6 @@ public class PlayerController : MonoBehaviour
                 other.gameObject.GetComponent<EnemyController>().Eaten();
             }
         }
-    }
-    IEnumerator Pause()
-    {
-        yield return new WaitForSeconds(3);
     }
     void ResetLevel()
     {
@@ -203,21 +287,58 @@ public class PlayerController : MonoBehaviour
     {
         score += scoreChange;
         livesScore += scoreChange;
-        scoreText.text = "Score\n" + score;
-        if (livesScore > 10000)
+        scoreText.text = "" + score;
+        if (livesScore > 5000)
         {
             AddLives(1);
-            livesScore -= 10000;
+            livesScore -= 5000;
         }
     }
     void AddLives(int livesChange)
     {
-        lives += livesChange;
-        livesText.text = "Lives\n" + lives;
+        if (livesChange > 0 && lives > 4) //should stop the player from getting more than 9 lives
+        {
+            return;
+        }else
+        {
+            lives += livesChange;
+        }
+        
+        //livesText.text = "Lives\n" + lives;
+        string lifecount;
+        GameObject obj;
+        if (livesChange > 0)
+        {
+            lifecount = "Life " + lives;
+            obj = GameObject.Find(lifecount);
+            obj.GetComponent<Image>().enabled = true;
+        } else //lose a life
+        {
+            lifecount = "Life " + (lives+1);
+            obj = GameObject.Find(lifecount);
+            obj.GetComponent<Image>().enabled = false;
+        }
+        
+
+
         if (lives < 1)
         {
+            audioSource.clip = loseMusic;
+            audioSource.Play();
+
+            Time.timeScale = 0;
             gameOver = true;
-            winText.text = "You Lose\nPress Space to Continue";
+            winText.text = "Game Over\nPress Space to End";
+            backdrop.enabled = true;
+        } else if (livesChange < 0)
+        {
+            audioSource.clip = loseMusic;
+            audioSource.Play();
+
+            Time.timeScale = 0;
+            gameOver = true;
+            winText.text = "You got Caught\nPress Space to Continue";
+            backdrop.enabled = true;
         }
         
     }
