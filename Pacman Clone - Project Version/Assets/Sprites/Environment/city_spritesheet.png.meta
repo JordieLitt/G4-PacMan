@@ -1,64 +1,31 @@
 fileFormatVersion: 2
-guid: f7ce72aa3275e4642a6668328a426bbf
+guid: d4f921d5f3d12d34d92aaac1f2e70b2a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3525592401588440963
-    second: cop_car_spritesheet_0
+      213: 4292435041887245056
+    second: city_spritesheet_0
   - first:
-      213: -1056803528871430614
-    second: cop_car_spritesheet_1
+      213: -4553476946465124022
+    second: city_spritesheet_1
   - first:
-      213: 4380777752817784072
-    second: cop_car_spritesheet_2
+      213: -1023577930395159285
+    second: city_spritesheet_2
   - first:
-      213: -6723476713724750878
-    second: cop_car_spritesheet_3
+      213: -733358187328532649
+    second: city_spritesheet_3
   - first:
-      213: 6256136529210908125
-    second: cop_car_spritesheet_4
+      213: -6967927389327487201
+    second: city_spritesheet_4
   - first:
-      213: -6140965723026215881
-    second: cop_car_spritesheet_5
+      213: -965504310525255516
+    second: city_spritesheet_5
   - first:
-      213: 601375867765472870
-    second: cop_car_spritesheet_6
+      213: -246269674882247803
+    second: city_spritesheet_6
   - first:
-      213: 7091440055929875256
-    second: cop_car_spritesheet_7
-  - first:
-      213: -3705638415231990302
-    second: cop_car_spritesheet_8
-  - first:
-      213: -4301922567694054096
-    second: cop_car_spritesheet_0
-  - first:
-      213: -882888194006027746
-    second: cop_car_spritesheet_1
-  - first:
-      213: 646714004278989504
-    second: cop_car_spritesheet_2
-  - first:
-      213: 5234786088902322946
-    second: cop_car_spritesheet_3
-  - first:
-      213: -7449618104896392983
-    second: cop_car_spritesheet_4
-  - first:
-      213: -6651735651322157084
-    second: cop_car_spritesheet_5
-  - first:
-      213: -3480745000548696124
-    second: cop_car_spritesheet_6
-  - first:
-      213: 5108359855467809510
-    second: cop_car_spritesheet_7
-  - first:
-      213: 8287791703216771843
-    second: cop_car_spritesheet_8
-  - first:
-      213: 2983257254810536902
-    second: cop_car_spritesheet_9
+      213: -7097026714037961752
+    second: city_spritesheet_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -103,9 +70,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -194,13 +161,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cop_car_spritesheet_0
+      name: city_spritesheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 200
-        width: 200
-        height: 200
+        y: 100
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,20 +175,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 03d0c5d97308c44c0800000000000000
-      internalID: -4301922567694054096
+      spriteID: 003d025adeac19b30800000000000000
+      internalID: 4292435041887245056
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cop_car_spritesheet_1
+      name: city_spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a411401b7dccec0c0800000000000000
+      internalID: -4553476946465124022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: city_spritesheet_2
       rect:
         serializedVersion: 2
         x: 200
-        y: 200
-        width: 200
-        height: 200
+        y: 100
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,20 +217,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1272e38dd95fb3f0800000000000000
-      internalID: -882888194006027746
+      spriteID: b05fdd2ab458bc1f0800000000000000
+      internalID: -1023577930395159285
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cop_car_spritesheet_2
+      name: city_spritesheet_3
       rect:
         serializedVersion: 2
-        x: 400
-        y: 200
-        width: 200
-        height: 200
+        x: 300
+        y: 100
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,62 +238,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0c2d150e5f699f800800000000000000
-      internalID: 646714004278989504
+      spriteID: 75f88273d9692d5f0800000000000000
+      internalID: -733358187328532649
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cop_car_spritesheet_3
-      rect:
-        serializedVersion: 2
-        x: 600
-        y: 200
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 20bed287632b5a840800000000000000
-      internalID: 5234786088902322946
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cop_car_spritesheet_4
-      rect:
-        serializedVersion: 2
-        x: 800
-        y: 200
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9e0f459adc3ad9890800000000000000
-      internalID: -7449618104896392983
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cop_car_spritesheet_5
+      name: city_spritesheet_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -313,20 +259,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e72423eaa940b3a0800000000000000
-      internalID: -6651735651322157084
+      spriteID: f1f8b6205f2fc4f90800000000000000
+      internalID: -6967927389327487201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cop_car_spritesheet_6
+      name: city_spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a0a80ee1f6d992f0800000000000000
+      internalID: -965504310525255516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: city_spritesheet_6
       rect:
         serializedVersion: 2
         x: 200
         y: 0
-        width: 200
-        height: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -334,20 +301,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cff3902dd8e1bfc0800000000000000
-      internalID: -3480745000548696124
+      spriteID: 58351b51903159cf0800000000000000
+      internalID: -246269674882247803
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cop_car_spritesheet_7
+      name: city_spritesheet_7
       rect:
         serializedVersion: 2
-        x: 400
+        x: 300
         y: 0
-        width: 200
-        height: 200
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -355,50 +322,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ea460a293a84e640800000000000000
-      internalID: 5108359855467809510
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cop_car_spritesheet_8
-      rect:
-        serializedVersion: 2
-        x: 600
-        y: 0
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3035aaab4a6240370800000000000000
-      internalID: 8287791703216771843
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cop_car_spritesheet_9
-      rect:
-        serializedVersion: 2
-        x: 800
-        y: 0
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6cbc692daa8a66920800000000000000
-      internalID: 2983257254810536902
+      spriteID: 8eb3f442ecb428d90800000000000000
+      internalID: -7097026714037961752
       vertices: []
       indices: 
       edges: []

@@ -19,7 +19,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 oldPos;
     private Vector3 targetPos;
     public Vector3 facing;
-    public GameObject[] ghosts;
+    public GameObject Blinky;
+    public GameObject Pinky;
+    public GameObject Inky;
+    public GameObject Clyde;
     public int pelletsLeft;
     
     private bool isMoving;
@@ -27,14 +30,8 @@ public class PlayerController : MonoBehaviour
 
     private EnemyController ghostScript;
 
-    void Start()
+    void Awake()
     {
-        winText.text = "";
-        levelText.text = "Level\n"+ level;
-        livesText.text = "Lives\n"+ lives;
-
-        AddScore(0);
-        
         BoundsInt bounds = pelletMap.cellBounds; //count up all the pellets on the map
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
@@ -43,11 +40,17 @@ public class PlayerController : MonoBehaviour
                 pelletsLeft += 1;
         }
         print (pelletsLeft);
-        ghosts = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach(GameObject ghost in ghosts)
-            {
-                ghostScript = ghost.GetComponent<EnemyController>();
-            }
+
+        winText.text = "";
+        levelText.text = "Level\n"+ level;
+        livesText.text = "Lives\n"+ lives;
+
+        AddScore(0);
+        
+        Blinky = GameObject.Find("Blinky Car");
+        Pinky = GameObject.Find("Pinky Car");
+        Inky = GameObject.Find("Inky Car");
+        Clyde = GameObject.Find("Clyde Car");
     }
 
     // Update is called once per frame
@@ -141,9 +144,9 @@ public class PlayerController : MonoBehaviour
         //print(other.gameObject.tag);
         if (other.gameObject.CompareTag("Pellet") && pelletMap != null)
         {
-            //print(pelletMap.WorldToCell(transform.position));
+            print(pelletMap.WorldToCell(targetPos));
             //need to find the positon of the tile and turn it off
-            pelletMap.SetTile(pelletMap.WorldToCell(transform.position), null);
+            pelletMap.SetTile(pelletMap.WorldToCell(targetPos), null);
             pelletsLeft -= 1;
             print(pelletsLeft);
             AddScore(10);
@@ -161,13 +164,14 @@ public class PlayerController : MonoBehaviour
             AddScore(200);
             Destroy(other.gameObject);
             
-            foreach(GameObject ghost in ghosts)
-            {
-                ghostScript.VulnerableState();
-            }
+            Blinky.GetComponent<EnemyController>().VulnerableState();
+            Pinky.GetComponent<EnemyController>().VulnerableState();
+            Inky.GetComponent<EnemyController>().VulnerableState();
+            Clyde.GetComponent<EnemyController>().VulnerableState();
+            
         }else if (other.gameObject.CompareTag("Enemy"))
         {
-            if (ghostScript.Vulnerable == false)
+            if (other.gameObject.GetComponent<EnemyController>().Vulnerable == false)
             {
                 AddLives(-1);
             } else
@@ -210,7 +214,7 @@ public class PlayerController : MonoBehaviour
     {
         lives += livesChange;
         livesText.text = "Lives\n" + lives;
-        if (lives < 0)
+        if (lives < 1)
         {
             gameOver = true;
             winText.text = "You Lose\nPress Space to Continue";
