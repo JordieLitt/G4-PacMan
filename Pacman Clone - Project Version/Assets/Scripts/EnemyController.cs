@@ -28,9 +28,11 @@ public class EnemyController : MonoBehaviour
     private int maxPellets;
     private bool eaten = false;
     private float eatenTimer;
+    Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
         if (player != null)
             print("Found Script");
@@ -38,7 +40,10 @@ public class EnemyController : MonoBehaviour
 
         scatterPos = waypoint.transform.position;
         chaseTimer = maxChaseTimer;
+
+
         maxPellets = playerScript.pelletsLeft;
+        print(gameObject.name + maxPellets);
     }
 
     // Update is called once per frame
@@ -73,17 +78,22 @@ public class EnemyController : MonoBehaviour
         {
             eaten = false;
             GetComponent<CircleCollider2D>().enabled = true;
+            GetComponent<Animator>().enabled = true;
+            GetComponent<SpriteRenderer>().enabled = true;
             //animation state change back to normal
         }
 
         if (Vulnerable == true && vulTimer < 0)
         {
-            GetComponent<SpriteRenderer>().color = Color.white;
+            animator.SetBool("Vul", false);
             Vulnerable = false;
         }
-        //print(playerScript.pelletsLeft);
+        
         if (playerScript.pelletsLeft > (maxPellets * startPercent)) //stops ghosts from moving until the player has eaten a certain percentage of pellets
+        {    
+            //print(gameObject.name + " " + playerScript.pelletsLeft + "/" + (maxPellets * startPercent) + "Waiting");
             return;
+        }
 
         if (isMoving) //can't change direction mid-move
             return;
@@ -186,13 +196,16 @@ public class EnemyController : MonoBehaviour
     {
         Vulnerable = true;
         vulTimer = maxVulTimer;
-        GetComponent<SpriteRenderer>().color = Color.blue; // change this to an animation state change
+        animator.SetBool("Vul",true);
+        print(gameObject.name + "I'm Scared!");
     }
 
     public void Eaten()
     {
         eaten = true;
-        GetComponent<CircleCollider2D>().enabled = true;
+        GetComponent<CircleCollider2D>().enabled = false;
+        GetComponent<Animator>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
         //add another animation state change here
     }
     private IEnumerator MoveEnemy(Vector3 direction)
