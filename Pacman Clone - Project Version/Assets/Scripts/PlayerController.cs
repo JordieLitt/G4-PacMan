@@ -73,10 +73,6 @@ public class PlayerController : MonoBehaviour
         
         anim = GetComponent<Animator>();
 
-        
-
-        
-        
         Blinky = GameObject.Find("Blinky Car");
         Pinky = GameObject.Find("Pinky Car");
         Inky = GameObject.Find("Inky Car");
@@ -94,6 +90,10 @@ public class PlayerController : MonoBehaviour
             else
                 timeToMove = 0.25f;
         }
+        if (Input.GetKeyDown(KeyCode.P))
+            SceneManager.LoadScene("Level B");
+        if (Input.GetKeyDown(KeyCode.O))
+            SceneManager.LoadScene("Level A");
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -195,9 +195,9 @@ public class PlayerController : MonoBehaviour
     {
         Debug.DrawRay(transform.position, direction, Color.red, 0.6f);
         //Physics2D.Raycast(transform.position, direction, 1f);
-
+        int layerMask = LayerMask.GetMask("Walls");
         //print(hit.collider);
-        if (Physics2D.Raycast(transform.position, direction, 0.6f))
+        if (Physics2D.Raycast(transform.position, direction, 0.6f, layerMask))
         {
             //print(true);
             return true;
