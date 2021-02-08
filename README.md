@@ -13,6 +13,7 @@ WASD- Movement
 Space- Pause/Continue
 Esc- Quits game at any point
 L- Increase speed for debugging purposes/Cheat Code
+P/O- Alternate the levels for debugging/Cheat Code
 
 How to Play:
 Travel through the city to collect the green fuel rods, while avoiding the cop cars. Grabbing the purple EMPs will temporarily change the cop’s siren lights signally that you can eat them to gain bonus points. Once you collect all the items, continue to the next stages to try and grow your score.
