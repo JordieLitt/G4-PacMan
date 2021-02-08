@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
 
             if (pelletsLeft <= 0)
             {
-                winText.text = "You Beat Level " + level + "!";
+                winText.text = "You Beat Level " + level + "!\nPress Space to Continue";
 
                 audioSource.clip = winMusic;
                 audioSource.Play();
