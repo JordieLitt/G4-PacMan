@@ -43,7 +43,24 @@ public class PlayerController : MonoBehaviour
     private bool cheatMode;
 
     void Awake()
-    {
+    {   
+        audioSource = GetComponent<AudioSource>();
+        
+        levelText.text = "" + level;
+        AddScore(-10);
+        if (SceneManager.GetActiveScene().name == "Win Screen")
+        {
+            gameOver = true;
+            pelletsLeft = 1;
+            lives = 3;
+            audioSource.clip = winMusic;
+            audioSource.Play();
+            return;
+        }
+
+        livesText.text = "Lives";
+        winText.text = "";
+        backdrop.enabled = false;
         BoundsInt bounds = pelletMap.cellBounds; //count up all the pellets on the map
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
@@ -53,15 +70,12 @@ public class PlayerController : MonoBehaviour
         }
         print(pelletsLeft);
         
-        audioSource = GetComponent<AudioSource>();
+        
         anim = GetComponent<Animator>();
 
-        winText.text = "";
-        backdrop.enabled = false;
-        levelText.text = "" + level;
-        livesText.text = "Lives";
+        
 
-        AddScore(-10);
+        
         
         Blinky = GameObject.Find("Blinky Car");
         Pinky = GameObject.Find("Pinky Car");
@@ -83,6 +97,14 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (SceneManager.GetActiveScene().name == "Win Screen")
+            {
+                lives = 3;
+                score = 0;
+                level = 1;
+                SceneManager.LoadScene("MainMenu");
+            }
+            
             if (!gameOver)    
             {
                 isPaused = !isPaused;
@@ -98,19 +120,17 @@ public class PlayerController : MonoBehaviour
                     backdrop.enabled = false;
                     Time.timeScale = 1;
                 }
-            } else if (pelletsLeft == 0)
+            }else if (pelletsLeft == 0)
             {
                 Time.timeScale = 1;
                 Scene scene = SceneManager.GetActiveScene();
                 if (scene.name == "Level B")
                 {
                     SceneManager.LoadScene("Level A");
-                } else
+                } else if (scene.name == "Level A")
                 {
                     SceneManager.LoadScene("Level B");
                 }
-                
-
             }else if (lives > 0) //gameOver
             {
                 anim.SetBool("Dead",false);
@@ -126,13 +146,10 @@ public class PlayerController : MonoBehaviour
                 transform.position = Vector3.zero;
                 audioSource.Stop();
                 gameOver = false;
-            } else
+            } else if (SceneManager.GetActiveScene().name != "Win Screen")
             {
                 Time.timeScale = 1;
-                lives = 3;
-                score = 0;
-                level = 1;
-                SceneManager.LoadScene("MainMenu");
+                SceneManager.LoadScene("Win Screen");
             }
         }
     }
@@ -296,7 +313,7 @@ public class PlayerController : MonoBehaviour
     }
     void AddLives(int livesChange)
     {
-        if (livesChange > 0 && lives > 4) //should stop the player from getting more than 9 lives
+        if (livesChange > 0 && lives > 4) //should stop the player from getting more than 5 lives
         {
             return;
         }else
@@ -318,8 +335,6 @@ public class PlayerController : MonoBehaviour
             obj = GameObject.Find(lifecount);
             obj.GetComponent<Image>().enabled = false;
         }
-        
-
 
         if (lives < 1)
         {
